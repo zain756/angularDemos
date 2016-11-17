@@ -1,0 +1,44 @@
+[
+  {
+      "alpha_two_code": "US",
+      "country": "United States",
+      "domain": "tcnj.edu",
+      "name": "The College of New Jersey",
+      "web_page": "http://www.tcnj.edu"
+  },
+  {
+      "alpha_two_code": "US",
+      "country": "United States",
+      "domain": "acu.edu",
+      "name": "Abilene Christian University",
+      "web_page": "http://www.acu.edu/"
+  },
+  {
+      "alpha_two_code": "US",
+      "country": "United States",
+      "domain": "adelphi.edu",
+      "name": "Adelphi University",
+      "web_page": "http://www.adelphi.edu/"
+  },
+  {
+      "alpha_two_code": "US",
+      "country": "United States",
+      "domain": "agnesscott.edu",
+      "name": "Agnes Scott College",
+      "web_page": "http://www.agnesscott.edu/"
+  },
+  {
+      "alpha_two_code": "US",
+      "country": "United States",
+      "domain": "atc.edu",
+      "name": "Aiken Technical College",
+      "web_page": "http://www.atc.edu/"
+  },
+  {
+      "alpha_two_code": "US",
+      "country": "United States",
+      "domain": "afit.af.mil",
+      "name": "Air Force Institute of Technology",
+      "web_page": "http://www.afit.af.mil/"
+  }
+]

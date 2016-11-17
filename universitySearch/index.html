@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+	<title>Bootstrap Case</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">	
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-resource/1.4.8/angular-resource.js"></script>  
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="crossorigin="anonymous"></script>
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	
+	<style>
+		@media screen and (min-width: 1200px) {
+			#rowForm{
+				margin:0px auto;
+				width: 600px;
+				padding-right:30px;
+				//background-color: grey;
+				
+			}
+		}
+	</style>
+</head>
+<body>
+
+<div  class = "container" ng-controller="myCtrl">
+	
+	<div class = "row" id = "rowForm">
+		<form class="form-horizontal">
+			<div class="form-group">
+				<label class="control-label col-sm-3" for="country">Country:</label>
+				<div class="col-sm-9">
+					<input type="text" class="form-control" id="country" placeholder="Enter Country">
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="control-label col-sm-3" for="countryCode">Country Code:</label>
+				<div class="col-sm-9">
+					<input type="text" class="form-control" id="countryCode" placeholder="Enter two char Country code ">
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="control-label col-sm-3" for="name">Name:</label>
+				<div class="col-sm-9">
+					<input type="text" class="form-control" id="name" placeholder="Enter Name">
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="control-label col-sm-3" for="domain">Domain:</label>
+				<div class="col-sm-9">
+					<input type="text" class="form-control" id="domain" placeholder="Enter Domain">
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<label class="control-label col-sm-3" for="webPage">Webpage:</label>
+				<div class="col-sm-9">
+					<input type="text" class="form-control" id="webPage" placeholder="Enter Website">
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<div class="col-sm-offset-3 col-sm-9">
+					<button type="submit" class="btn btn-default" ng-click = "searchUniversities()" >Submit</button>
+				</div>
+			</div>
+   
+		</form>
+	</div>	
+			
+			
+
+    <div ng-if="!showNews">
+		<h3>{{message}}</h3>
+    </div>
+			
+	<div  ng-if = "showNews">
+		<div  ng-repeat = "item in articles">
+			<h3 class="well well-sm">{{item.title}}</h3>
+            <p>{{item.description}}</p>
+            <p><i>{{item.author}}</i></p>
+				
+		</div>
+	</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<script>
+var app = angular.module('myApp', ['ngResource']);
+app.config(['$resourceProvider', function($resourceProvider) {
+  // Don't strip trailing slashes from calculated URLs
+  $resourceProvider.defaults.stripTrailingSlashes = false;
+}]);
+//app.constant ('baseURL', 'http://universities.hipolabs.com/search');
+app.constant ('baseURL', 'http://api.fixer.io/latest');
+//factory
+app.factory('newsApiFactory', ['$resource', 'baseURL', function($resource, baseURL){
+  var newsFactory = {};
+  newsFactory.getNewsArticles = function(){
+    //https://newsapi.org/v1/articles?source=bbc-news&sortBy=top&apiKey=bd47fe20bb17445287a2813e88a0a3a7
+	//return $resource(baseURL,{country: 'Pakistan' });
+	return $resource(baseURL);
+} 
+  return newsFactory;
+}]);
+
+//controller
+app.controller('myCtrl',['$scope', '$http', 'newsApiFactory' ,function($scope, $http, newsApiFactory) {
+    
+   $scope.message = "Loading ..."
+   $scope.showNews = false;
+	$scope.universities = [];
+   $scope.searchUniversities = function(param){
+		var sourcesList = $('#name').val();
+		console.log(sourcesList);
+		$scope.articles = [];
+		
+		newsApiFactory.getNewsArticles().get().$promise.then(
+			function(response){
+				console.log(response);
+				//$scope.universities =  $scope.articles.concat(response.articles);
+				$scope.showNews = true;
+			},
+			function(response){
+				$scope.message = "Error: " + response.status + " " + response.statusText;
+			}); 
+		}
+	
+}]);
+
+</script>
+
+</body>
+</html>

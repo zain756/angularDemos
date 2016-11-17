@@ -33,22 +33,25 @@
 
 <script>
 var app = angular.module('myApp', ['ngResource']);
-
+app.config(['$resourceProvider', function($resourceProvider) {
+  // Don't strip trailing slashes from calculated URLs
+  $resourceProvider.defaults.stripTrailingSlashes = false;
+}]);
 app.constant ('baseURL', 'https://newsapi.org/v1/articles/');
 app.constant('apiKey', 'bd47fe20bb17445287a2813e88a0a3a7');
 
 //factory
-app.factory('newsApiFactory', ['$resource', 'baseURL', function($resource, baseURL){
+app.factory('newsApiFactory', ['$resource', 'baseURL','apiKey', function($resource, baseURL,apikey){
   var newsFactory = {};
   newsFactory.getNewsArticles = function(){
-    //return $resource("https://newsapi.org/v1/articles?source="+"bbc-news" +"&sortBy=top&apiKey=bd47fe20bb17445287a2813e88a0a3a7");
-	return $resource(baseURL);
+    //https://newsapi.org/v1/articles?source=bbc-news&sortBy=top&apiKey=bd47fe20bb17445287a2813e88a0a3a7
+	return $resource(baseURL,{apiKey:apikey, sortBy: 'top' });
 } 
   return newsFactory;
 }]);
 
 //controller
-app.controller('myCtrl',['$scope', '$http', 'newsApiFactory','apiKey' ,function($scope, $http, newsApiFactory, apiKey) {
+app.controller('myCtrl',['$scope', '$http', 'newsApiFactory' ,function($scope, $http, newsApiFactory) {
     
     $scope.message = "Loading ..."
     $scope.showNews = false;
@@ -58,17 +61,9 @@ app.controller('myCtrl',['$scope', '$http', 'newsApiFactory','apiKey' ,function(
 		var sourcesList = $('#sources').val();
 		console.log(sourcesList);
 		$scope.articles = [];
-      /*
-    $http.get("https://newsapi.org/v1/articles?source="+"cnn" +"&sortBy=top&apiKey=bd47fe20bb17445287a2813e88a0a3a7")
-		.then(function(response) {
-			$scope.news = response.data.articles;
-			$scope.showNews = true;
-		});
-    */
-	
 		angular.forEach(sourcesList, function(val, key){
 			
-			newsApiFactory.getNewsArticles().get({source: val, apiKey: apiKey}).$promise.then(
+			newsApiFactory.getNewsArticles().get({source:val }).$promise.then(
 				function(response){
 					console.log(response.articles);
 					$scope.articles =  $scope.articles.concat(response.articles);

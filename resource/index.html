@@ -1,0 +1,87 @@
+
+<html>
+	
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-resource/1.4.8/angular-resource.js"></script>  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="crossorigin="anonymous"></script>
+<body>
+
+<div ng-app="myApp" ng-controller="myCtrl">
+   <button ng-click = "getNews('cnn')">Get News</button>
+  
+    <select  id = "sources" multiple>
+		<option value = "bbc-news">BBC</option>
+	    <option value = "cnn" >CNN</option>
+	    <option value = "bbc-sport">BBC Sports</option>
+		<option value = "espn-cric-info">ESPNCricInfo</option>
+	    <option value = "entertainment-weekly">Entertainment</option> 
+	</select>
+  
+    <div ng-if="!showNews">
+		<h3>{{message}}</h3>
+    </div>
+			
+	<div  ng-if = "showNews">
+		<div  ng-repeat = "item in articles">
+			<h3>{{item.title}}</h3>
+            <p>{{item.description}}</p>
+            <p><i>{{item.author}}</i></p>
+				
+		</div>
+	</div>
+</div>
+
+<script>
+var app = angular.module('myApp', ['ngResource']);
+
+app.constant ('baseURL', 'https://newsapi.org/v1/articles/');
+app.constant('apiKey', 'bd47fe20bb17445287a2813e88a0a3a7');
+
+//factory
+app.factory('newsApiFactory', ['$resource', 'baseURL', function($resource, baseURL){
+  var newsFactory = {};
+  newsFactory.getNewsArticles = function(){
+    //return $resource("https://newsapi.org/v1/articles?source="+"bbc-news" +"&sortBy=top&apiKey=bd47fe20bb17445287a2813e88a0a3a7");
+	return $resource(baseURL);
+} 
+  return newsFactory;
+}]);
+
+//controller
+app.controller('myCtrl',['$scope', '$http', 'newsApiFactory','apiKey' ,function($scope, $http, newsApiFactory, apiKey) {
+    
+    $scope.message = "Loading ..."
+    $scope.showNews = false;
+	$scope.articles = [];
+	
+    $scope.getNews = function(param){
+		var sourcesList = $('#sources').val();
+		console.log(sourcesList);
+		$scope.articles = [];
+      /*
+    $http.get("https://newsapi.org/v1/articles?source="+"cnn" +"&sortBy=top&apiKey=bd47fe20bb17445287a2813e88a0a3a7")
+		.then(function(response) {
+			$scope.news = response.data.articles;
+			$scope.showNews = true;
+		});
+    */
+	
+		angular.forEach(sourcesList, function(val, key){
+			
+			newsApiFactory.getNewsArticles().get({source: val, apiKey: apiKey}).$promise.then(
+				function(response){
+					console.log(response.articles);
+					$scope.articles =  $scope.articles.concat(response.articles);
+					$scope.showNews = true;
+				},
+				function(response){
+					$scope.message = "Error: " + response.status + " " + response.statusText;
+				}) 
+			});
+		}
+}]);
+
+</script>
+
+</body>
+</html>

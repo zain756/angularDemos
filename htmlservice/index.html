@@ -1,0 +1,71 @@
+
+<html>
+	
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-resource/1.4.8/angular-resource.js"></script>  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="crossorigin="anonymous"></script>
+<body>
+
+<div ng-app="myApp" ng-controller="myCtrl">
+   <button ng-click = "getNews('cnn')">Get News</button>
+  
+  
+  
+    <div ng-if="!showNews">
+		<h3>{{message}}</h3>
+    </div>
+			
+	<div  ng-if = "showNews">
+		<div  ng-repeat = "item in articles">
+			<h3>{{item.title}}</h3>
+            <p>{{item.description}}</p>
+            <p><i>{{item.author}}</i></p>
+				
+		</div>
+	</div>
+</div>
+<script>
+	
+var app = angular.module('myApp', []);
+
+app.constant ('baseURL', 'https://newsapi.org/v1/articles/');
+app.constant('apiKey', 'bd47fe20bb17445287a2813e88a0a3a7');
+
+app.factory('newsApiFactory', ['$http', function($http){
+	var newsFactory = {}
+	newsFactory.getNewsArticles = function(){
+		return  $http.get("https://newsapi.org/v1/articles?source="+"cnn" +"&sortBy=top&apiKey=bd47fe20bb17445287a2813e88a0a3a7");
+	}
+	return newsFactory;
+	
+	}]);
+
+
+//controller
+app.controller('myCtrl',['$scope', '$http', 'apiKey' ,'newsApiFactory',function($scope, $http, apiKey, newsApiFactory) {
+    
+    $scope.message = "Loading ..."
+    $scope.showNews = false;
+	$scope.articles = [];
+    $scope.getNews = function(param){
+      /*
+    $http.get("https://newsapi.org/v1/articles?source="+"cnn" +"&sortBy=top&apiKey=bd47fe20bb17445287a2813e88a0a3a7")
+		.then(function(response) {
+			$scope.articles = response.data.articles;
+			$scope.showNews = true;
+		});
+	  */
+	  
+	  newsApiFactory.getNewsArticles().then(function(response) {
+			$scope.articles = response.data.articles;
+			$scope.showNews = true;
+		});
+    }
+	 
+}]);
+	
+	
+	</script>
+
+</body>
+</html>

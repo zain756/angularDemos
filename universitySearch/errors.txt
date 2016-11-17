@@ -1,0 +1,50 @@
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 's Republic of', 'pust.net', ' at line 1
+KP
+Korea, Democratic People's Republic of
+pust.net
+Pyongyang University of Science and Technology
+http://www.pust.net/
+
+
+
+( ! ) Notice: Undefined index: alpha_two_code in D:\wamp64\www\angularDemos\universitySearch\enterJSONData.php on line 39
+Call Stack
+#	Time	Memory	Function	Location
+1	0.0000	248984	{main}( )	...\enterJSONData.php:0
+
+( ! ) Notice: Undefined index: alpha_two_code in D:\wamp64\www\angularDemos\universitySearch\enterJSONData.php on line 39
+Call Stack
+#	Time	Memory	Function	Location
+1	0.0000	248984	{main}( )	...\enterJSONData.php:0
+
+( ! ) Notice: Undefined index: alpha_two_code in D:\wamp64\www\angularDemos\universitySearch\enterJSONData.php on line 39
+Call Stack
+#	Time	Memory	Function	Location
+1	0.0000	248984	{main}( )	...\enterJSONData.php:0
+
+( ! ) Notice: Undefined index: alpha_two_code in D:\wamp64\www\angularDemos\universitySearch\enterJSONData.php on line 39
+Call Stack
+#	Time	Memory	Function	Location
+1	0.0000	248984	{main}( )	...\enterJSONData.php:0
+
+( ! ) Notice: Undefined index: alpha_two_code in D:\wamp64\www\angularDemos\universitySearch\enterJSONData.php on line 39
+Call Stack
+#	Time	Memory	Function	Location
+1	0.0000	248984	{main}( )	...\enterJSONData.php:0
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 's Democratic Republic', 'nuol.edu.la', ' at line 1
+LA
+Lao People's Democratic Republic
+nuol.edu.la
+National University of Laos
+http://www.nuol.edu.la/
+
+
+You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 's Democratic Republic', 'simt.edu.la', ' at line 1
+LA
+Lao People's Democratic Republic
+simt.edu.la
+Soutsaka Institute of management and Technology
+http://www.simt.edu.la/
+
+
+9330 Rows inserted.

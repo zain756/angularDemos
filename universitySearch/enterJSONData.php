@@ -15,7 +15,7 @@
     mysqli_stmt_bind_param($st, 'sssss', $alpha_two_code, $country, $domain, $name, $web_page);
 
     // read json file
-    //$filename = 'records.json';
+    //filename = 'records.json';
 	 $filename = 'completeRecords.json';
     $json = file_get_contents($filename);   
 
@@ -40,28 +40,45 @@
 		  $country = $row['country'];
 		  $domain = $row['domain'];
         $name = $row['name'];
+		  $name = str_replace("'", "''",$name );
 		  $web_page = $row['web_page'];
-		 
-		  //echo $alpha_two_code."<br>";
-		  //echo $country."<br>";
-		  //echo $domain."<br>";
-		  //echo $name."<br>";
-		  //echo $web_page."<br>"."<br>";
+		  /*)
+		  echo $name."<br>";
+		  if (strpos($name, '\\') !== FALSE) 
+		  { echo "It contains a /"; }
+		 */
+		 // echo $alpha_two_code."<br>";
+		 // echo $country."<br>";
+		 // echo $domain."<br>";
+		 // echo $name."<br>";
+		 // echo $web_page."<br>"."<br>";
 		  
         
         // execute insert query
+		  /*
         mysqli_stmt_execute($st);
-		  $count++;
+		
 		 printf("%d Row inserted.\n", mysqli_stmt_affected_rows($st));
 		 echo "<br>";
+		  */
 		  
-		  /*
+		  
 		   $query = "INSERT INTO universitytable(alpha_two_code, country, domain, name, web_page) VALUES('$alpha_two_code', '$country', '$domain',
-                                                    '$name', '$web_page')";
+                                                    '{$name}', '$web_page')";
 			if (!$qresult = mysqli_query($conn, $query)) {
-				exit(mysqli_error($conn));
+				echo mysqli_error($conn)."<br>";
+				echo $alpha_two_code."<br>";
+				echo $country."<br>";
+				echo $domain."<br>";
+				echo $name."<br>";
+				echo $web_page."<br>"."<br>"."<br>";
+				//exit(mysqli_error($conn));
 			}
-			*/
+			else{
+				//echo "row inserted"."<br>";
+			  $count++;
+			}
+			
 		 
 		  
     }

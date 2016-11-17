@@ -40,14 +40,14 @@ CREATE TABLE IF NOT EXISTS `itemdetails` (
   `remaining_quantity` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
-
+	DROP TABLE IF EXISTS `universityTable`;
 	CREATE TABLE IF NOT EXISTS `universityTable` (
-	  `id` int(8) NOT NULL AUTO_INCREMENT,
-	  `country` varchar(30) NOT NULL,
-	  `domain` varchar(30) NOT NULL,
-	  `name` varchar(50) NOT NULL,
-	  `alpha_two_code` varchar(10) NOT NULL,
-	  `web_page` varchar(10) NOT NULL,
+	  `id` int(16) NOT NULL AUTO_INCREMENT,
+	  `country` varchar(100) NOT NULL,
+	  `domain` varchar(100) NOT NULL,
+	  `name` varchar(200) NOT NULL,
+	  `alpha_two_code` varchar(20) NOT NULL,
+	  `web_page` varchar(100) NOT NULL,
 	  
 	  PRIMARY KEY (`id`)
 	);

@@ -18850,8 +18850,27 @@
       "name": "Universidad Veritas",
       "web_page": "http://www.uveritas.ac.cr/"
   },
- 
- 
+  {
+      "alpha_two_code": "CI",
+      "country": "C\u00f4te d'Ivoire",
+      "domain": "uabobo.ci",
+      "name": "Universit\u00e9 d'Abobo-Adjam\u00e9",
+      "web_page": "http://www.uabobo.ci/"
+  },
+  {
+      "alpha_two_code": "CI",
+      "country": "C\u00f4te d'Ivoire",
+      "domain": "ubouake.ci",
+      "name": "Universit\u00e9 de Bouak\u00e9",
+      "web_page": "http://www.ubouake.ci/"
+  },
+  {
+      "alpha_two_code": "CI",
+      "country": "C\u00f4te d'Ivoire",
+      "domain": "univ-cocody.ci",
+      "name": "Universit\u00e9 de Cocody",
+      "web_page": "http://www.univ-cocody.ci/"
+  },
   {
       "alpha_two_code": "IR",
       "country": "Iran, Islamic Republic of",
@@ -18922,7 +18941,27 @@
       "name": "Zagreb School of Economics and Management",
       "web_page": "http://www.zsem.hr/"
   },
- 
+  {
+      "alpha_two_code": "CU",
+      "country": "Cuba",
+      "domain": "cujae.edu.cu",
+      "name": "Instituto Superior Polit\u00e9cnico Jos\u00e9 Antonio Echeverr\u00eda",
+      "web_page": "http://www.cujae.edu.cu/"
+  },
+  {
+      "alpha_two_code": "CU",
+      "country": "Cuba",
+      "domain": "ismm.edu.cu",
+      "name": "Instituto Superior Minero Metal\u00fargico \"Dr. Antonio N\u00fa\u00f1ez Jim\u00e9nez\"",
+      "web_page": "http://www.ismm.edu.cu/"
+  },
+  {
+      "alpha_two_code": "CU",
+      "country": "Cuba",
+      "domain": "ispcmw.rimed.cu",
+      "name": "Universidad Pedag\u00f3gica \"Jos\u00e9 Mart\u00ed\", Camag\u00fcey",
+      "web_page": "http://www.ispcmw.rimed.cu/"
+  },
   {
       "alpha_two_code": "CU",
       "country": "Cuba",

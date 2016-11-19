@@ -57,6 +57,7 @@ app.controller('myCtrl',['$scope', '$http', 'apiKey' ,'newsApiFactory',function(
 	  */
 	  
 	  newsApiFactory.getNewsArticles().then(function(response) {
+	  		console.log(response.data);
 			$scope.articles = response.data.articles;
 			$scope.showNews = true;
 		});

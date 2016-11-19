@@ -7,139 +7,174 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-resource/1.4.8/angular-resource.js"></script>  
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="crossorigin="anonymous"></script>
-   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	
 	<style>
-		@media screen and (min-width: 1200px) {
-			#rowForm{
-				margin:0px auto;
-				width: 600px;
-				padding-right:30px;
-				//background-color: grey;
-				
-			}
+		body{
+			background-color: #AFAFAF;
+			color: #545453;
+		}
+		.row{
+			background-color: #F2F2F2;
+			padding:15px;
+			//margin:4px;
+			border-radius: 8px;
+
+		}
+		
+		.col-sm-12{
+			background-color: #545453;
+			color:#E7E7E7;
+			border-radius:8px  ;
+			padding-top: 10px;
+		}
+		.well{
+			color:#545453;
+		}
+
+		.jumbotron{
+			background-color: #545453;
+			color:white;
+			max-height:100px;
+			padding-top: 1px;
+			margin-bottom: 10px;
 		}
 	</style>
 </head>
 <body>
+	<div  class = "container" ng-controller="myCtrl">
+		<div class = "row" >
+			<div class = "jumbotron text-center">
+			<h1>University Search</h1>
+			</div>
+			<div class = "col-sm-offset-3">
+				<form class="form-horizontal userForm" novalidate>
+					<div class="form-group">
+						<label class="control-label col-sm-2" for="country">Country:</label>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" id="country" 
+								   placeholder="Enter Country" ng-model = "input.country">
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="control-label col-sm-2" for="countryCode">Country Code:</label>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" id="countryCode" 
+								   placeholder="Enter two char Country code " ng-model = "input.alpha_two_code">
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="control-label col-sm-2" for="name">Name:</label>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" id="name" placeholder="Enter Name"
+							ng-model = "input.name">
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="control-label col-sm-2" for="domain">Domain:</label>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" id="domain" placeholder="Enter Domain"
+							ng-model = "input.domain">
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="control-label col-sm-2" for="webPage">Webpage:</label>
+						<div class="col-sm-4">
+							<input type="text" class="form-control" id="webPage" placeholder="Enter Website"
+							ng-model = "input.web_page">
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<div class="col-sm-offset-2 col-sm-2">
+							<button type="submit" class="btn btn-primary" ng-click = "searchUniversities(input)" >Submit</button>
+						</div>
+					</div>
+		   
+				</form>
+			
+				<!--<p>{{input | json}}</p>-->		
+				<div ng-if="!showResults">
+					<h3>{{message}}</h3>
+		    	</div>
+		    </div>
 
-<div  class = "container" ng-controller="myCtrl">
-	
-	<div class = "row" id = "rowForm">
-		<form class="form-horizontal">
-			<div class="form-group">
-				<label class="control-label col-sm-3" for="country">Country:</label>
-				<div class="col-sm-9">
-					<input type="text" class="form-control" id="country" placeholder="Enter Country">
+			<div ng-if = "showResults" class = "col-sm-12">
+				<div   >
+					<div  ng-repeat = "item in universities">
+						<h3 class="well well-sm">{{item.name}}</h3>
+			            <p><b>Country:</b> {{item.country}}</p>
+			            <p><b>Domain:</b> {{item.domain}}</p>
+			            <p><b>Web Page:</b> {{item.web_page}}</p>
+							
+					</div>
 				</div>
 			</div>
-			
-			<div class="form-group">
-				<label class="control-label col-sm-3" for="countryCode">Country Code:</label>
-				<div class="col-sm-9">
-					<input type="text" class="form-control" id="countryCode" placeholder="Enter two char Country code ">
-				</div>
-			</div>
-			
-			<div class="form-group">
-				<label class="control-label col-sm-3" for="name">Name:</label>
-				<div class="col-sm-9">
-					<input type="text" class="form-control" id="name" placeholder="Enter Name">
-				</div>
-			</div>
-			
-			<div class="form-group">
-				<label class="control-label col-sm-3" for="domain">Domain:</label>
-				<div class="col-sm-9">
-					<input type="text" class="form-control" id="domain" placeholder="Enter Domain">
-				</div>
-			</div>
-			
-			<div class="form-group">
-				<label class="control-label col-sm-3" for="webPage">Webpage:</label>
-				<div class="col-sm-9">
-					<input type="text" class="form-control" id="webPage" placeholder="Enter Website">
-				</div>
-			</div>
-			
-			<div class="form-group">
-				<div class="col-sm-offset-3 col-sm-9">
-					<button type="submit" class="btn btn-default" ng-click = "searchUniversities()" >Submit</button>
-				</div>
-			</div>
-   
-		</form>
-	</div>	
-			
-			
-
-    <div ng-if="!showNews">
-		<h3>{{message}}</h3>
-    </div>
-			
-	<div  ng-if = "showNews">
-		<div  ng-repeat = "item in articles">
-			<h3 class="well well-sm">{{item.title}}</h3>
-            <p>{{item.description}}</p>
-            <p><i>{{item.author}}</i></p>
-				
-		</div>
+		<!--<p>{{universities}}</p>-->
+		</div>	
 	</div>
-
-
-</div>
-
-
-
-
-
-
-
-
-
-
+<!--
+Angular js code
+-->
 <script>
 var app = angular.module('myApp', ['ngResource']);
 app.config(['$resourceProvider', function($resourceProvider) {
   // Don't strip trailing slashes from calculated URLs
   $resourceProvider.defaults.stripTrailingSlashes = false;
 }]);
-//app.constant ('baseURL', 'http://universities.hipolabs.com/search');
-app.constant ('baseURL', 'http://api.fixer.io/latest');
+
+app.constant ('baseURL', 'restapi/searchuniversity.php');
 //factory
-app.factory('newsApiFactory', ['$resource', 'baseURL', function($resource, baseURL){
+app.factory('newsApiFactory', ['$http', 'baseURL', function($http, baseURL){
   var newsFactory = {};
-  newsFactory.getNewsArticles = function(){
-    //https://newsapi.org/v1/articles?source=bbc-news&sortBy=top&apiKey=bd47fe20bb17445287a2813e88a0a3a7
-	//return $resource(baseURL,{country: 'Pakistan' });
-	return $resource(baseURL);
-} 
+  newsFactory.getNewsArticles = function(inputParams){
+		return  $http.get(baseURL,{params: inputParams});
+	}
   return newsFactory;
 }]);
 
 //controller
 app.controller('myCtrl',['$scope', '$http', 'newsApiFactory' ,function($scope, $http, newsApiFactory) {
     
-   $scope.message = "Loading ..."
-   $scope.showNews = false;
-	$scope.universities = [];
-   $scope.searchUniversities = function(param){
-		var sourcesList = $('#name').val();
-		console.log(sourcesList);
-		$scope.articles = [];
+   
+   $scope.showResults = false;
+   $scope.universities = [];
+   $scope.searchUniversities = function(input){
 		
-		newsApiFactory.getNewsArticles().get().$promise.then(
+		$scope.universities = [];
+		$scope.message = "Loading ..."
+		$scope.showResults = false;
+		/*
+		newsApiFactory.getNewsArticles().get({name : "uet"}).$promise.then(
 			function(response){
 				console.log(response);
 				//$scope.universities =  $scope.articles.concat(response.articles);
-				$scope.showNews = true;
+				$scope.showResults = true;
 			},
 			function(response){
 				$scope.message = "Error: " + response.status + " " + response.statusText;
 			}); 
-		}
-	
+		
+		*/	
+   	  	newsApiFactory.getNewsArticles(input).then(
+   	  		function(response) {
+   	  			if (response.data.message == "no record found!"){
+   	  				$scope.message = response.data.message;
+   	  			}
+   	  			else{
+   	  				$scope.universities = response.data.results;
+   	  				console.log(response.data);
+   	  				//console.log(response.data[0]);
+   	  				$scope.showResults = true;
+   	  			}	
+   	  		
+			});
+    }  
 }]);
 
 </script>

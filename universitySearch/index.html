@@ -128,7 +128,8 @@ app.config(['$resourceProvider', function($resourceProvider) {
   $resourceProvider.defaults.stripTrailingSlashes = false;
 }]);
 
-app.constant ('baseURL', 'restapi/searchuniversity.php');
+//app.constant ('baseURL', 'restapi/searchuniversity.php');
+app.constant ('baseURL', 'http://www.zainitservices.comli.com/searchuniversity.php');
 //factory
 app.factory('newsApiFactory', ['$http', 'baseURL', function($http, baseURL){
   var newsFactory = {};
@@ -163,13 +164,15 @@ app.controller('myCtrl',['$scope', '$http', 'newsApiFactory' ,function($scope, $
 		*/	
    	  	newsApiFactory.getNewsArticles(input).then(
    	  		function(response) {
+   	  			
    	  			if (response.data.message == "no record found!"){
    	  				$scope.message = response.data.message;
    	  			}
    	  			else{
    	  				$scope.universities = response.data.results;
+   	  				//console.log(response);
    	  				console.log(response.data);
-   	  				//console.log(response.data[0]);
+   	  				
    	  				$scope.showResults = true;
    	  			}	
    	  		

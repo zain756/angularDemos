@@ -3,18 +3,19 @@
 // Connection variables 
 header("Access-Control-Allow-Origin: *");
 header('Content-Type: application/json');
-/*
+
 $host = "mysql6.000webhost.com"; // MySQL host name eg. localhost
 $user = "a4130694_user"; // MySQL user. eg. root ( if your on localserver)
 $password = "nokiax101"; // MySQL user password  (if password is not set for your root user then keep it empty )
 $database = "a4130694_db"; // MySQL Database name
-*/
+
 //use for testeing on localhost
+/*
 $host = "localhost"; // MySQL host name eg. localhost
 $user = "root"; // MySQL user. eg. root ( if your on localserver)
 $password = ""; // MySQL user password  (if password is not set for your root user then keep it empty )
 $database = "patientsdb"; // MySQL Database name
-
+*/
 // Connect to MySQL Database 
 $conn = mysqli_connect($host, $user, $password,$database) or die("Could not connect to database");
 
@@ -82,7 +83,7 @@ if (isset ($_GET['name']) || isset ($_GET['country'])|| isset ($_GET['domain'])
 	 json_encode($response);
 	 
     $query = "SELECT * FROM universitytable WHERE country like '$country' and domain like '$domain' 
-               and name like '$name' and alpha_two_code like '$alpha_two_code' and web_page like '$web_page' limit 100"  ;
+               and name like '$name' and alpha_two_code like '$alpha_two_code' and web_page like '$web_page'"  ;
 
 
 

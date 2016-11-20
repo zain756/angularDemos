@@ -100,8 +100,14 @@
 					</div>
 					
 					<div class="form-group">
-						<div class="col-sm-offset-2 col-sm-2">
-							<button type="submit" class="btn btn-primary" ng-click = "searchUniversities(input)" >Submit</button>
+						<div class="col-sm-offset-2 col-sm-3">
+							<button type="submit" class="btn btn-primary btn-lg" ng-click = "searchUniversities(input)" >
+								
+								Search
+								 <span ng-if = "showLoadingIcon"><i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>
+								 <span class="sr-only">Loading...</span></span>
+								 </button>
+								
 						</div>
 					</div>
 		   
@@ -110,11 +116,6 @@
 				<!--<p>{{input | json}}</p>-->		
 				
 		    </div>
-			 
-			 <div class = "col-sm-12 text-center" ng-if = "showLoadingIcon">
-			    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
-				<span class="sr-only">Loading...</span>
-			 </div>
 		</div>
 		
 		
@@ -129,7 +130,7 @@
 				<div>
 					<div  ng-repeat = "item in universities | limitTo : 20 : startingIndex">
 						<h3 class="well well-sm">{{item.name}}</h3>
-							<p><b>id:</b> {{item.id}}</p>
+							
 			            <p><b>Country:</b> {{item.country}}</p>
 			            <p><b>Domain:</b> {{item.domain}}</p>
 			            <p><b>Web Page:</b> {{item.web_page}}</p>
@@ -149,8 +150,8 @@ app.config(['$resourceProvider', function($resourceProvider) {
   // Don't strip trailing slashes from calculated URLs
   $resourceProvider.defaults.stripTrailingSlashes = false;
 }]);
-app.constant ('baseURL', 'restapi/searchuniversity.php');
-//app.constant ('baseURL', 'http://www.zainitservices.comli.com/searchuniversity.php');
+//app.constant ('baseURL', 'restapi/searchuniversity.php');
+app.constant ('baseURL', 'http://www.zainitservices.comli.com/searchuniversity.php');
 //factory
 app.factory('newsApiFactory', ['$http', 'baseURL', function($http, baseURL){
   var newsFactory = {};
@@ -170,17 +171,22 @@ app.controller('myCtrl',['$scope', '$http', 'newsApiFactory' ,function($scope, $
 	$scope.startingIndex = 0;
 	$scope.endingIndex = 19;
 	var length = 20;
+	var count = 0;
 	$scope.searchNextUniversties = function(){
 		--$scope.length;
-		$scope.startingIndex += (length);
-		$scope.endingIndex +=length;
+		if ($scope.startingIndex + length < count){
+			$scope.startingIndex += (length);
+			$scope.endingIndex +=length;
+		}
 		
 	};
 	
 	$scope.searchPrevUniversties = function(){
 		--$scope.length;
-		$scope.startingIndex -= length;
-		$scope.endingIndex -=length;
+		if ($scope.endingIndex - length >= 0){
+			$scope.startingIndex -= length;
+			$scope.endingIndex -= length;
+		}
 		
 	};
 	
@@ -218,8 +224,8 @@ app.controller('myCtrl',['$scope', '$http', 'newsApiFactory' ,function($scope, $
    	  			else{
    	  				$scope.universities = response.data.results;
    	  				//console.log(response);
-						$scope.count = response.data.count.count;
-						$scope.message = $scope.count + " Universities Found";
+						count = response.data.count.count;
+						$scope.message = count + " Universities Found";
    	  				console.log(response.data);
    	  				$scope.showLoadingIcon = false;
    	  				$scope.showResults = true;

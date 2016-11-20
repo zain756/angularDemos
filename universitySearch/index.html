@@ -5,6 +5,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">	
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+	<script src="https://use.fontawesome.com/99ebb0d30d.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-resource/1.4.8/angular-resource.js"></script>  
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -19,11 +20,10 @@
 			background-color: #F2F2F2;
 			padding:15px;
 			//margin:4px;
-			border-radius: 8px;
-
+			//border-radius: 8px;
 		}
 		
-		.col-sm-12{
+		.resultsBg{
 			background-color: #545453;
 			color:#E7E7E7;
 			border-radius:8px  ;
@@ -32,7 +32,6 @@
 		.well{
 			color:#545453;
 		}
-
 		.jumbotron{
 			background-color: #545453;
 			color:white;
@@ -46,15 +45,20 @@
 	<div  class = "container" ng-controller="myCtrl">
 		<div class = "row" >
 			<div class = "jumbotron text-center">
-			<h1>University Search</h1>
+				<h1>University Search</h1>
 			</div>
 			<div class = "col-sm-offset-3">
-				<form class="form-horizontal userForm" novalidate>
+				<form class="form-horizontal userForm" name = "form" novalidate>
 					<div class="form-group">
 						<label class="control-label col-sm-2" for="country">Country:</label>
 						<div class="col-sm-4">
 							<input type="text" class="form-control" id="country" 
-								   placeholder="Enter Country" ng-model = "input.country">
+								   placeholder="Enter Country" ng-model = "input.country" name = "country" required>
+						</div>
+						<div class="col-sm-4">
+							<div ng-show="form.$submitted || form.country.$touched">
+								<div ng-show="form.country.$error.required"><i>Please Enter Country.</i></div>
+							</div>
 						</div>
 					</div>
 					
@@ -70,7 +74,12 @@
 						<label class="control-label col-sm-2" for="name">Name:</label>
 						<div class="col-sm-4">
 							<input type="text" class="form-control" id="name" placeholder="Enter Name"
-							ng-model = "input.name">
+								ng-model = "input.name" name = "name" required>
+						</div>
+						<div class="col-sm-4">
+							<div ng-show="form.$submitted || form.name.$touched">
+								<div ng-show="form.name.$error.required"><i>Please Enter University Name.</i></div>
+							</div>
 						</div>
 					</div>
 					
@@ -99,13 +108,19 @@
 				</form>
 			
 				<!--<p>{{input | json}}</p>-->		
-				<div ng-if="!showResults">
-					<h3>{{message}}</h3>
-		    	</div>
+				
 		    </div>
-
-			<div ng-if = "showResults" class = "col-sm-12">
-				<div   >
+			 
+			 <div class = "col-sm-12 text-center" ng-if = "showLoadingIcon">
+			    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+				<span class="sr-only">Loading...</span>
+			 </div>
+		</div>
+		
+		
+		<div class = "row" ng-if = "showResults">	
+			<div class = "col-sm-12 resultsBg">
+				<div>
 					<div  ng-repeat = "item in universities">
 						<h3 class="well well-sm">{{item.name}}</h3>
 			            <p><b>Country:</b> {{item.country}}</p>
@@ -127,7 +142,6 @@ app.config(['$resourceProvider', function($resourceProvider) {
   // Don't strip trailing slashes from calculated URLs
   $resourceProvider.defaults.stripTrailingSlashes = false;
 }]);
-
 //app.constant ('baseURL', 'restapi/searchuniversity.php');
 app.constant ('baseURL', 'http://www.zainitservices.comli.com/searchuniversity.php');
 //factory
@@ -138,16 +152,17 @@ app.factory('newsApiFactory', ['$http', 'baseURL', function($http, baseURL){
 	}
   return newsFactory;
 }]);
-
 //controller
 app.controller('myCtrl',['$scope', '$http', 'newsApiFactory' ,function($scope, $http, newsApiFactory) {
     
    
    $scope.showResults = false;
+	$scope.showLoadingIcon = false;
    $scope.universities = [];
    $scope.searchUniversities = function(input){
 		
 		$scope.universities = [];
+		$scope.showLoadingIcon = true;
 		$scope.message = "Loading ..."
 		$scope.showResults = false;
 		/*
@@ -167,19 +182,20 @@ app.controller('myCtrl',['$scope', '$http', 'newsApiFactory' ,function($scope, $
    	  			
    	  			if (response.data.message == "no record found!"){
    	  				$scope.message = response.data.message;
+						$scope.showLoadingIcon = false;
+						
    	  			}
    	  			else{
    	  				$scope.universities = response.data.results;
    	  				//console.log(response);
    	  				console.log(response.data);
-   	  				
+   	  				$scope.showLoadingIcon = false;
    	  				$scope.showResults = true;
    	  			}	
    	  		
 			});
     }  
 }]);
-
 </script>
 
 </body>

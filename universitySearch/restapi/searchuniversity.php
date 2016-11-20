@@ -12,7 +12,7 @@ $database = "a4130694_db"; // MySQL Database name
 //use for testeing on localhost
 $host = "localhost"; // MySQL host name eg. localhost
 $user = "root"; // MySQL user. eg. root ( if your on localserver)
-$password = "zain"; // MySQL user password  (if password is not set for your root user then keep it empty )
+$password = ""; // MySQL user password  (if password is not set for your root user then keep it empty )
 $database = "patientsdb"; // MySQL Database name
 
 // Connect to MySQL Database 
@@ -67,7 +67,20 @@ if (isset ($_GET['name']) || isset ($_GET['country'])|| isset ($_GET['domain'])
     */
 
     //echo json_encode($response);
-    
+	 
+	 $queryCount = "SELECT count(*) as count FROM universitytable WHERE country like '$country' and domain like '$domain' 
+               and name like '$name' and alpha_two_code like '$alpha_two_code' and web_page like '$web_page' limit 20"  ;
+					
+	 if (!$result = mysqli_query($conn, $queryCount)) {
+        exit(mysqli_error($conn));
+    }
+	 if(mysqli_num_rows($result) > 0) {
+		 while ($row = mysqli_fetch_assoc($result)) {
+			$response["count"] = $row;
+		 }
+	 }
+	 json_encode($response);
+	 
     $query = "SELECT * FROM universitytable WHERE country like '$country' and domain like '$domain' 
                and name like '$name' and alpha_two_code like '$alpha_two_code' and web_page like '$web_page' limit 20"  ;
 

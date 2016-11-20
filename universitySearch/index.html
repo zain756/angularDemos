@@ -26,7 +26,7 @@
 		.resultsBg{
 			background-color: #545453;
 			color:#E7E7E7;
-			border-radius:8px  ;
+			//border-radius:8px  ;
 			padding-top: 10px;
 		}
 		.well{
@@ -119,10 +119,17 @@
 		
 		
 		<div class = "row" ng-if = "showResults">	
+			<div class = "col-sm-12 resultsBg text-center" ng-if = "showButtons">
+				<button type="button" class = "btn btn-default" ng-click = "searchPrevUniversties()">Prev</button>
+				<button type="button" class = "btn btn-default"  ng-click = "searchNextUniversties()">Next</button>
+				<span>Showing {{startingIndex + 1}} - {{endingIndex + 1}}</span>
+			</div>
 			<div class = "col-sm-12 resultsBg">
+				<h3>{{message}}</h3>
 				<div>
-					<div  ng-repeat = "item in universities">
+					<div  ng-repeat = "item in universities | limitTo : 20 : startingIndex">
 						<h3 class="well well-sm">{{item.name}}</h3>
+							<p><b>id:</b> {{item.id}}</p>
 			            <p><b>Country:</b> {{item.country}}</p>
 			            <p><b>Domain:</b> {{item.domain}}</p>
 			            <p><b>Web Page:</b> {{item.web_page}}</p>
@@ -142,8 +149,8 @@ app.config(['$resourceProvider', function($resourceProvider) {
   // Don't strip trailing slashes from calculated URLs
   $resourceProvider.defaults.stripTrailingSlashes = false;
 }]);
-//app.constant ('baseURL', 'restapi/searchuniversity.php');
-app.constant ('baseURL', 'http://www.zainitservices.comli.com/searchuniversity.php');
+app.constant ('baseURL', 'restapi/searchuniversity.php');
+//app.constant ('baseURL', 'http://www.zainitservices.comli.com/searchuniversity.php');
 //factory
 app.factory('newsApiFactory', ['$http', 'baseURL', function($http, baseURL){
   var newsFactory = {};
@@ -158,13 +165,34 @@ app.controller('myCtrl',['$scope', '$http', 'newsApiFactory' ,function($scope, $
    
    $scope.showResults = false;
 	$scope.showLoadingIcon = false;
+	$scope.showButtons = false;
    $scope.universities = [];
+	$scope.startingIndex = 0;
+	$scope.endingIndex = 19;
+	var length = 20;
+	$scope.searchNextUniversties = function(){
+		--$scope.length;
+		$scope.startingIndex += (length);
+		$scope.endingIndex +=length;
+		
+	};
+	
+	$scope.searchPrevUniversties = function(){
+		--$scope.length;
+		$scope.startingIndex -= length;
+		$scope.endingIndex -=length;
+		
+	};
+	
+	
    $scope.searchUniversities = function(input){
 		
 		$scope.universities = [];
 		$scope.showLoadingIcon = true;
 		$scope.message = "Loading ..."
 		$scope.showResults = false;
+		$scope.startingIndex = 0;
+		$scope.endingIndex = 19;
 		/*
 		newsApiFactory.getNewsArticles().get({name : "uet"}).$promise.then(
 			function(response){
@@ -183,18 +211,23 @@ app.controller('myCtrl',['$scope', '$http', 'newsApiFactory' ,function($scope, $
    	  			if (response.data.message == "no record found!"){
    	  				$scope.message = response.data.message;
 						$scope.showLoadingIcon = false;
+						$scope.showResults = true;
+						$scope.showButtons = false;
 						
    	  			}
    	  			else{
    	  				$scope.universities = response.data.results;
    	  				//console.log(response);
+						$scope.count = response.data.count.count;
+						$scope.message = $scope.count + " Universities Found";
    	  				console.log(response.data);
    	  				$scope.showLoadingIcon = false;
    	  				$scope.showResults = true;
+						$scope.showButtons = true;
    	  			}	
    	  		
 			});
-    }  
+		}	  
 }]);
 </script>
 

@@ -82,7 +82,7 @@ if (isset ($_GET['name']) || isset ($_GET['country'])|| isset ($_GET['domain'])
 	 json_encode($response);
 	 
     $query = "SELECT * FROM universitytable WHERE country like '$country' and domain like '$domain' 
-               and name like '$name' and alpha_two_code like '$alpha_two_code' and web_page like '$web_page' limit 20"  ;
+               and name like '$name' and alpha_two_code like '$alpha_two_code' and web_page like '$web_page' limit 100"  ;
 
 
 

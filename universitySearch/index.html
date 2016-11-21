@@ -5,6 +5,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">	
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.js"></script>
 	<script src="https://use.fontawesome.com/99ebb0d30d.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-resource/1.4.8/angular-resource.js"></script>  
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="crossorigin="anonymous"></script>
@@ -38,6 +39,30 @@
 			max-height:100px;
 			padding-top: 1px;
 			margin-bottom: 10px;
+		}
+		
+		.animate-repeat {
+		  line-height:10px;
+		}
+
+		.animate-repeat.ng-move,
+		.animate-repeat.ng-enter,
+		.animate-repeat.ng-leave {
+		  transition:all linear 0.6s;
+		}
+
+		.animate-repeat.ng-leave.ng-leave-active,
+		.animate-repeat.ng-move,
+		.animate-repeat.ng-enter {
+		  opacity:0;
+		  max-height:0;
+		}
+
+		.animate-repeat.ng-leave,
+		.animate-repeat.ng-move.ng-move-active,
+		.animate-repeat.ng-enter.ng-enter-active {
+		  opacity:1;
+		  max-height:200px;
 		}
 	</style>
 </head>
@@ -121,14 +146,15 @@
 		
 		<div class = "row" ng-if = "showResults">	
 			<div class = "col-sm-12 resultsBg text-center" ng-if = "showButtons">
+			
 				<button type="button" class = "btn btn-default" ng-click = "searchPrevUniversties()">Prev</button>
 				<button type="button" class = "btn btn-default"  ng-click = "searchNextUniversties()">Next</button>
-				<span>Showing {{startingIndex + 1}} - {{endingIndex + 1}}</span>
+				<span>Showing {{index + 1}} - {{index + 20}}</span>
 			</div>
 			<div class = "col-sm-12 resultsBg">
 				<h3>{{message}}</h3>
 				<div>
-					<div  ng-repeat = "item in universities | limitTo : 20 : startingIndex">
+					<div   class = "animate-repeat"ng-repeat = "item in universities | limitTo : 20 :index">
 						<h3 class="well well-sm">{{item.name}}</h3>
 							
 			            <p><b>Country:</b> {{item.country}}</p>
@@ -145,11 +171,13 @@
 Angular js code
 -->
 <script>
-var app = angular.module('myApp', ['ngResource']);
+var app = angular.module('myApp', ['ngAnimate']);
+/*
 app.config(['$resourceProvider', function($resourceProvider) {
   // Don't strip trailing slashes from calculated URLs
-  $resourceProvider.defaults.stripTrailingSlashes = false;
+  //$resourceProvider.defaults.stripTrailingSlashes = false;
 }]);
+*/
 //app.constant ('baseURL', 'restapi/searchuniversity.php');
 app.constant ('baseURL', 'http://www.zainitservices.comli.com/searchuniversity.php');
 //factory
@@ -168,28 +196,20 @@ app.controller('myCtrl',['$scope', '$http', 'newsApiFactory' ,function($scope, $
 	$scope.showLoadingIcon = false;
 	$scope.showButtons = false;
    $scope.universities = [];
-	$scope.startingIndex = 0;
-	$scope.endingIndex = 19;
+	$scope.index = 0;
 	var length = 20;
 	var count = 0;
 	$scope.searchNextUniversties = function(){
-		--$scope.length;
-		if ($scope.startingIndex + length < count){
-			$scope.startingIndex += (length);
-			$scope.endingIndex +=length;
+		if ($scope.index + length < count){
+			$scope.index += (length);
 		}
-		
 	};
 	
 	$scope.searchPrevUniversties = function(){
-		--$scope.length;
-		if ($scope.endingIndex - length >= 0){
-			$scope.startingIndex -= length;
-			$scope.endingIndex -= length;
-		}
-		
+		if ($scope.index - length >= 0){
+			$scope.index -= length;	
+		}	
 	};
-	
 	
    $scope.searchUniversities = function(input){
 		
@@ -197,20 +217,7 @@ app.controller('myCtrl',['$scope', '$http', 'newsApiFactory' ,function($scope, $
 		$scope.showLoadingIcon = true;
 		$scope.message = "Loading ..."
 		$scope.showResults = false;
-		$scope.startingIndex = 0;
-		$scope.endingIndex = 19;
-		/*
-		newsApiFactory.getNewsArticles().get({name : "uet"}).$promise.then(
-			function(response){
-				console.log(response);
-				//$scope.universities =  $scope.articles.concat(response.articles);
-				$scope.showResults = true;
-			},
-			function(response){
-				$scope.message = "Error: " + response.status + " " + response.statusText;
-			}); 
-		
-		*/	
+		$scope.index = 0;
    	  	newsApiFactory.getNewsArticles(input).then(
    	  		function(response) {
    	  			

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="myApp">
 <head>
-	<title>Bootstrap Case</title>
+	<title>Angular App</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">	
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
@@ -146,7 +146,7 @@
 		
 		<div class = "row" ng-if = "showResults">	
 			<div class = "col-sm-12 resultsBg text-center" ng-if = "showButtons">
-			
+				<!--<input ng-model = "searchText">-->
 				<button type="button" class = "btn btn-default" ng-click = "searchPrevUniversties()">Prev</button>
 				<button type="button" class = "btn btn-default"  ng-click = "searchNextUniversties()">Next</button>
 				<span>Showing {{index + 1}} - {{index + 20}}</span>
@@ -154,8 +154,8 @@
 			<div class = "col-sm-12 resultsBg">
 				<h3>{{message}}</h3>
 				<div>
-					<div   class = "animate-repeat"ng-repeat = "item in universities | limitTo : 20 :index">
-						<h3 class="well well-sm">{{item.name}}</h3>
+					<div   class = "animate-repeat" ng-repeat = "item in universities | limitTo : 20 :index">
+						<h3 class="well well-sm">{{$index + 1 + index}}. {{item.name}}</h3>
 							
 			            <p><b>Country:</b> {{item.country}}</p>
 			            <p><b>Domain:</b> {{item.domain}}</p>

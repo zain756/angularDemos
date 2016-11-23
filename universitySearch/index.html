@@ -126,7 +126,7 @@
 					
 					<div class="form-group">
 						<div class="col-sm-offset-2 col-sm-3">
-							<button type="submit" class="btn btn-primary btn-lg" ng-click = "searchUniversities(input)" >
+							<button type="submit" class="btn btn-primary btn-lg" ng-click = "searchUniversities(input)" ng-disabled="myForm.$invalid">
 								
 								Search
 								 <span ng-if = "showLoadingIcon"><i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>

@@ -1,0 +1,42 @@
+<div class = "container">
+	
+		
+		<div class = "row">
+			<div class = "col-sm-12">
+				<h3>Live Rates</h3>
+				<p>Live Currency Rates.Default is USD. Last Update at {{lastUpdateTime}} </p>
+			</div>
+		</div>
+		
+		<div class = "row">
+			<div class = "col-sm-12 text-center" ng-if = "showLoadingIcon">
+			<!--<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+			<span class="sr-only">Loading...</span>-->
+			<img src = "loading2.gif">
+			</div>
+		</div> 
+			
+		<div ng-if = "!showLoadingIcon">
+			<div class = "row">
+					<div class = "col-sm-12 text-center">
+					Add Currency &nbsp 
+					<select ng-model="targetCurr" ng-options="k as v for (k,v)  in selectCurrencyCodes" ng-change="addCurrencyBox(targetCurr)">
+					</select>
+				<!--<button type = "button" class = "btn btn-default" ng-click = "addCurrencyBox(targetCurr)"> D</button>-->
+				</div>
+			</div>
+		
+			<div class = "row">
+				
+				<a href = "#"><div class = "col-sm-1 currBox text-center" ng-repeat = "item in countries">
+				 <p ><b>{{item.code}}</b> {{item.rate}}</p>
+				 <p style="font-size:12px">{{item.name}}</p>
+				 
+				</div></a>
+			</div>
+		</div>
+		
+	
+	
+</div>
+	

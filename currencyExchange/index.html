@@ -8,14 +8,12 @@
 	<script src="https://use.fontawesome.com/99ebb0d30d.js"></script>-->
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.js"></script>
-	
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-resource/1.4.8/angular-resource.js"></script>  
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.0/css/bootstrap-select.min.css">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.0/js/bootstrap-select.min.js"></script>
-	<script src="currencyCodes.js"></script>
 	<style>
 		.jumbotron{
 			background-color: #F8A900;
@@ -53,7 +51,6 @@
 		</DIV>	
 	</div>
 	<div ng-controller = "ratesViewCtrl">
-		
 		<div box-view></div>
 	</div>
 	
@@ -97,8 +94,7 @@
 								
 						</div>
 					</div>
-					
-					
+		
 					<div class="form-group">
 						<div class="col-sm-offset-2 col-sm-3">
 							<button type="submit" class="btn btn-primary btn-lg" ng-click = "getRate(input)" ng-disabled="form.$invalid" >
@@ -106,27 +102,18 @@
 								Get Rates
 								 <span ng-if = "showLoadingIcon"><i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>
 								 <span class="sr-only">Loading...</span></span>
-								 </button>
-								
+							 </button>
 						</div>
-						
-						
 					</div>
-		   
 				</form>
-			
-			
-				
 		    </div>
 		</div>
-		
 		
 		<div class = "row" ng-if = "showResults">	
 			<div class = "well col-sm-3 col-sm-offset-2">
 				<h3> {{input.targetCurr}} {{result}} </h3>
 			</div>
 		</div>	
-		
 		
 	</div>
 	
@@ -150,7 +137,6 @@ app.factory('currencyApiFactory', ['$http', 'baseURL1','baseURL2', 'apikey', fun
 			format : 1
 			};
 	var refresh = function(){
-		
 			$http.get(baseURL1,{params: params}).then(
 				function(response){
 					console.log(response.data);
@@ -159,18 +145,8 @@ app.factory('currencyApiFactory', ['$http', 'baseURL1','baseURL2', 'apikey', fun
 
 					
 			});
-			/*
-			$http.get(baseURL2,{params: params}).then(
-				function(response){
-					console.log(response.data);
-					currencyFactory.currencyCodes = response.data.currencies;
-					
-			});
-			*/
 	};
 	refresh();
-	
-	
 	
 	currencyFactory.getRate = function(input){
 		console.log(currencyRates["USD" + input]);
@@ -181,12 +157,6 @@ app.factory('currencyApiFactory', ['$http', 'baseURL1','baseURL2', 'apikey', fun
 		//console.log(currencyRates["USD" + input]);
 		return $http.get(baseURL1, {params: params});
 	};
-	
-	currencyFactory.getCodes = function(){
-		return $http.get(baseURL2,{params: params});
-	};
-	
-	
 	
 	return currencyFactory;
 }]);
@@ -386,13 +356,6 @@ app.factory('currencyCodesFactory', function(){
     "ZWL":"Zimbabwean Dollar"
   }
 	currencyFact = {};
-	currencyFact.getCodes = function(){
-		var arr = [];
-		for(var key in currencyArr){
-				arr.push(key);
-		}
-		return arr;
-	}
 	
 	currencyFact.getCurrencies = function(){
 		return currencyArr;
@@ -414,7 +377,6 @@ app.controller('myCtrl',['$scope', 'currencyApiFactory' ,  'currencyCodesFactory
 		amount : 1
 	};
 	console.log($scope.selectCurrencyCodes);
-	
 	
 	$scope.getRate = function (input){
 		console.log(input.targetCurr);
@@ -457,7 +419,7 @@ app.controller("ratesViewCtrl",['$scope', 'currencyApiFactory', 'timeConvertFact
 			console.log(input);
 			$scope.countries.push({
 						code: input,
-						name: currencyCodes[input],
+						name: currencyCodesFactory.getCurrencies()[input],
 						rate: parseFloat(rates["USD"+input]).toFixed(2)
 	
 				});

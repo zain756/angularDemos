@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+	<title>Angular App</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">	
+	<!--
+	<script src="https://use.fontawesome.com/99ebb0d30d.js"></script>-->
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-resource/1.4.8/angular-resource.js"></script>  
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="crossorigin="anonymous"></script>
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.0/css/bootstrap-select.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.0/js/bootstrap-select.min.js"></script>
+	<script src="//unpkg.com/angular-ui-router/release/angular-ui-router.min.js"></script>
+	<script src="https://code.highcharts.com/highcharts.js"></script>
+   <script src="https://code.highcharts.com/modules/exporting.js"></script>
+	<style>
+		.jumbotron{
+			background-color: #F8A900;
+			//color:white;
+			max-height:100px;
+			padding-top: 1px;
+			margin-bottom: 10px;
+		}
+		
+		select{
+			height:30px;
+			width :160px;
+		}
+		
+		.currBox {
+			height:100px;
+			background-color: #646464;
+			margin:5px;
+			padding-top:10px;
+			border-radius:7px;
+			color: #FFAE00;
+		}
+		
+		
+		
+
+	</style>
+</head>
+<body>
+	<div class = "container">
+		<div class = "row" >
+			<div class = "jumbotron text-center">
+				<h1>Live Currency Data</h1>
+			</div>
+		</DIV>	
+	</div>
+	<div  class = "container" ng-controller = "pastHistoryCtrl">
+		<div class = "row">
+			<div class = "col-sm-6">
+				<b>Select Currency : &nbsp;</b><select ng-model="currency" ng-options="k as v for (k,v)  in selectCurrencyCodes">
+				</select>
+			</div>
+			<div class = "col-sm-6">
+				<b>Select Year : &nbsp;</b><select ng-model = "year" ng-options = "k for k  in selectYears"></select>
+				
+			</div>
+			
+		</div>
+		
+		<div class = "row">
+			<div class = "col-sm-4">
+				<button ng-click = "getMonthlyRates()" type = "button" class = "btn btn-primary btn-lg">Get Rates <img ng-if = "showLoadingIcon" src = "./images/loading2.gif" width ="30px"></button>
+			</div>
+		</div>
+		
+		<div class = "row" ng-if = "false">
+			<div class = "col-sm-12 text-center">
+				<img src = "./images/loading2.gif" width ="80px">
+			</div>
+		</div>
+		
+		<div class = "row">
+			<div  id="chart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+			
+		</div>
+	</div>	
+	
+
+	
+
+	
+<!--
+Angular js code
+-->
+<script>
+var app = angular.module('myApp', ['ui.router']);
+app.constant('apikey','7111b06a719a7143768c344884da9962');
+app.constant ('baseURL1', 'http://www.apilayer.net/api/live');
+app.constant ('baseURL2', 'http://www.apilayer.net/api/list');
+app.constant ('baseURL3', 'http://www.apilayer.net/api/historical');
+
+//factory
+app.factory('histCurrencyApiFactory', ['$http', 'baseURL3', 'apikey', function($http, baseURL3, apikey){
+	var currencyFactory = {};
+	var currencyRates = {};
+	
+	currencyFactory.getHistRates = function(currency, date){
+		//console.log(currencyRates["USD" + input]);
+		var params = {
+			access_key : apikey,
+			format : 1,
+			currencies : currency,
+			date : date
+			};
+		return $http.get(baseURL3, {params: params});
+	};
+	currencyFactory.years = ['2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011'
+							 ,'2012', '2013', '2014', '2015', '2016'];
+	
+	currencyFactory.dates = ['-01-01', '-02-01', '-03-01', '-04-01', '-05-01', '-06-01', '-07-01', '-08-01', '-09-01', '-10-01', '-11-01','-12-01' ];
+	
+	currencyFactory.months = {
+			"01" : "Jan", "02" : "Feb", "03" : "Mar", "04" : "Apr", "05" : "May", "06" : "Jun", "07" : "Jul", "08" : "Aug", "09" : "Sep", "10" : "Oct",
+			"11": "Nov", "12" : "Dec"
+		
+	}
+	return currencyFactory;
+}]);
+
+app.factory('chartFactory',function(){
+	var chart = {};
+	
+	chart.draw = function(rates){
+		var arr = [];
+		var curr = rates[0].currency;
+		rates.sort(function (a, b) {
+		  if (a.month > b.month) {
+			 return 1;
+		  }
+		  if (a.month < b.month) {
+			 return -1;
+		  }
+		  // a must be equal to b
+		  return 0;
+		});
+		console.log(rates);
+		
+		for (var i = 0; i < 12; ++i){
+			arr.push(rates[i].rate);
+		}
+		console.log(arr);	
+		
+		
+		Highcharts.chart('chart', {
+        title: {
+            text: 'Monthly Currency Rate of ' + curr,
+            x: -20 //center
+        },
+        subtitle: {
+            text: 'Source: currencyLayer.com',
+            x: -20
+        },
+        xAxis: {
+            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        },
+        yAxis: {
+            title: {
+                text: 'Currency Rate '
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valueSuffix: ' ' + curr
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: [{
+            name: curr,
+            data: arr
+        
+        }]
+    });	
+	}
+	
+		return chart;
+	
+});
+
+
+app.factory('currencyCodesFactory', function(){
+	var currencyArr = {
+    "AED":"United Arab Emirates Dirham",
+    "AFN":"Afghan Afghani",
+    "ALL":"Albanian Lek",
+    "AMD":"Armenian Dram",
+    "ANG":"Netherlands Antillean Guilder",
+    "AOA":"Angolan Kwanza",
+    "ARS":"Argentine Peso",
+    "AUD":"Australian Dollar",
+    "AWG":"Aruban Florin",
+    "AZN":"Azerbaijani Manat",
+    "BAM":"Bosnia-Herzegovina Convertible Mark",
+    "BBD":"Barbadian Dollar",
+    "BDT":"Bangladeshi Taka",
+    "BGN":"Bulgarian Lev",
+    "BHD":"Bahraini Dinar",
+    "BIF":"Burundian Franc",
+    "BMD":"Bermudan Dollar",
+    "BND":"Brunei Dollar",
+    "BOB":"Bolivian Boliviano",
+    "BRL":"Brazilian Real",
+    "BSD":"Bahamian Dollar",
+    "BTC":"Bitcoin",
+    "BTN":"Bhutanese Ngultrum",
+    "BWP":"Botswanan Pula",
+    "BYR":"Belarusian Ruble",
+    "BZD":"Belize Dollar",
+    "CAD":"Canadian Dollar",
+    "CDF":"Congolese Franc",
+    "CHF":"Swiss Franc",
+    "CLF":"Chilean Unit of Account (UF)",
+    "CLP":"Chilean Peso",
+    "CNY":"Chinese Yuan",
+    "COP":"Colombian Peso",
+    "CRC":"Costa Rican Col\u00f3n",
+    "CUC":"Cuban Convertible Peso",
+    "CUP":"Cuban Peso",
+    "CVE":"Cape Verdean Escudo",
+    "CZK":"Czech Republic Koruna",
+    "DJF":"Djiboutian Franc",
+    "DKK":"Danish Krone",
+    "DOP":"Dominican Peso",
+    "DZD":"Algerian Dinar",
+    "EEK":"Estonian Kroon",
+    "EGP":"Egyptian Pound",
+    "ERN":"Eritrean Nakfa",
+    "ETB":"Ethiopian Birr",
+    "EUR":"Euro",
+    "FJD":"Fijian Dollar",
+    "FKP":"Falkland Islands Pound",
+    "GBP":"British Pound Sterling",
+    "GEL":"Georgian Lari",
+    "GGP":"Guernsey Pound",
+    "GHS":"Ghanaian Cedi",
+    "GIP":"Gibraltar Pound",
+    "GMD":"Gambian Dalasi",
+    "GNF":"Guinean Franc",
+    "GTQ":"Guatemalan Quetzal",
+    "GYD":"Guyanaese Dollar",
+    "HKD":"Hong Kong Dollar",
+    "HNL":"Honduran Lempira",
+    "HRK":"Croatian Kuna",
+    "HTG":"Haitian Gourde",
+    "HUF":"Hungarian Forint",
+    "IDR":"Indonesian Rupiah",
+    "ILS":"Israeli New Sheqel",
+    "IMP":"Manx pound",
+    "INR":"Indian Rupee",
+    "IQD":"Iraqi Dinar",
+    "IRR":"Iranian Rial",
+    "ISK":"Icelandic Kr\u00f3na",
+    "JEP":"Jersey Pound",
+    "JMD":"Jamaican Dollar",
+    "JOD":"Jordanian Dinar",
+    "JPY":"Japanese Yen",
+    "KES":"Kenyan Shilling",
+    "KGS":"Kyrgystani Som",
+    "KHR":"Cambodian Riel",
+    "KMF":"Comorian Franc",
+    "KPW":"North Korean Won",
+    "KRW":"South Korean Won",
+    "KWD":"Kuwaiti Dinar",
+    "KYD":"Cayman Islands Dollar",
+    "KZT":"Kazakhstani Tenge",
+    "LAK":"Laotian Kip",
+    "LBP":"Lebanese Pound",
+    "LKR":"Sri Lankan Rupee",
+    "LRD":"Liberian Dollar",
+    "LSL":"Lesotho Loti",
+    "LTL":"Lithuanian Litas",
+    "LVL":"Latvian Lats",
+    "LYD":"Libyan Dinar",
+    "MAD":"Moroccan Dirham",
+    "MDL":"Moldovan Leu",
+    "MGA":"Malagasy Ariary",
+    "MKD":"Macedonian Denar",
+    "MMK":"Myanma Kyat",
+    "MNT":"Mongolian Tugrik",
+    "MOP":"Macanese Pataca",
+    "MRO":"Mauritanian Ouguiya",
+    "MUR":"Mauritian Rupee",
+    "MVR":"Maldivian Rufiyaa",
+    "MWK":"Malawian Kwacha",
+    "MXN":"Mexican Peso",
+    "MYR":"Malaysian Ringgit",
+    "MZN":"Mozambican Metical",
+    "NAD":"Namibian Dollar",
+    "NGN":"Nigerian Naira",
+    "NIO":"Nicaraguan C\u00f3rdoba",
+    "NOK":"Norwegian Krone",
+    "NPR":"Nepalese Rupee",
+    "NZD":"New Zealand Dollar",
+    "OMR":"Omani Rial",
+    "PAB":"Panamanian Balboa",
+    "PEN":"Peruvian Nuevo Sol",
+    "PGK":"Papua New Guinean Kina",
+    "PHP":"Philippine Peso",
+    "PKR":"Pakistani Rupee",
+    "PLN":"Polish Zloty",
+    "PYG":"Paraguayan Guarani",
+    "QAR":"Qatari Rial",
+    "RON":"Romanian Leu",
+    "RSD":"Serbian Dinar",
+    "RUB":"Russian Ruble",
+    "RWF":"Rwandan Franc",
+    "SAR":"Saudi Riyal",
+    "SBD":"Solomon Islands Dollar",
+    "SCR":"Seychellois Rupee",
+    "SDG":"Sudanese Pound",
+    "SEK":"Swedish Krona",
+    "SGD":"Singapore Dollar",
+    "SHP":"Saint Helena Pound",
+    "SLL":"Sierra Leonean Leone",
+    "SOS":"Somali Shilling",
+    "SRD":"Surinamese Dollar",
+    "STD":"S\u00e3o Tom\u00e9 and Pr\u00edncipe Dobra",
+    "SVC":"Salvadoran Col\u00f3n",
+    "SYP":"Syrian Pound",
+    "SZL":"Swazi Lilangeni",
+    "THB":"Thai Baht",
+    "TJS":"Tajikistani Somoni",
+    "TMT":"Turkmenistani Manat",
+    "TND":"Tunisian Dinar",
+    "TOP":"Tongan Pa\u02bbanga",
+    "TRY":"Turkish Lira",
+    "TTD":"Trinidad and Tobago Dollar",
+    "TWD":"New Taiwan Dollar",
+    "TZS":"Tanzanian Shilling",
+    "UAH":"Ukrainian Hryvnia",
+    "UGX":"Ugandan Shilling",
+    "USD":"United States Dollar",
+    "UYU":"Uruguayan Peso",
+    "UZS":"Uzbekistan Som",
+    "VEF":"Venezuelan Bol\u00edvar Fuerte",
+    "VND":"Vietnamese Dong",
+    "VUV":"Vanuatu Vatu",
+    "WST":"Samoan Tala",
+    "XAF":"CFA Franc BEAC",
+    "XAG":"Silver (troy ounce)",
+    "XAU":"Gold (troy ounce)",
+    "XCD":"East Caribbean Dollar",
+    "XDR":"Special Drawing Rights",
+    "XOF":"CFA Franc BCEAO",
+    "XPF":"CFP Franc",
+    "YER":"Yemeni Rial",
+    "ZAR":"South African Rand",
+    "ZMK":"Zambian Kwacha (pre-2013)",
+    "ZMW":"Zambian Kwacha",
+    "ZWL":"Zimbabwean Dollar"
+  }
+	currencyFact = {};
+	
+	currencyFact.getCurrencies = function(){
+		return currencyArr;
+	}
+	return currencyFact;
+});
+
+//controller
+app.controller('pastHistoryCtrl',['$scope', 'histCurrencyApiFactory' ,  'currencyCodesFactory','chartFactory', 
+			function($scope, histCurrencyApiFactory, currencyCodesFactory, chartFactory) {
+  
+$scope.selectYears = histCurrencyApiFactory.years;
+$scope.year = '2015';
+$scope.selectCurrencyCodes =  currencyCodesFactory.getCurrencies();
+$scope.currency = "PKR";
+$scope.showLoadingIcon = false;
+$scope.showGraph = false;
+var dates = histCurrencyApiFactory.dates;
+var rates = [];
+$scope.getMonthlyRates = function(){
+	rates =[];
+	$scope.showLoadingIcon = true;
+	$scope.showGraph = false;
+	console.log($scope.year);
+	for(var i = 0; i < 13; ++i){
+		histCurrencyApiFactory.getHistRates($scope.currency, $scope.year + dates[i] ).then(function(response){
+				console.log(response);
+				if (response.data.success == true){
+					//console.log(response.data);
+					rates.push({
+							currency : $scope.currency,
+							month : response.data.date.substring(5, 7),
+							rate : response.data.quotes["USD" + $scope.currency] 
+						});
+					
+					//console.log(rates);
+					if (rates.length ==  12){
+						console.log(rates);
+						chartFactory.draw(rates);
+						$scope.showLoadingIcon = false;
+						$scope.showGraph = true;
+					}	
+				}
+		});
+	}
+
+}
+	
+}]);
+
+
+</script>
+
+</body>
+</html>

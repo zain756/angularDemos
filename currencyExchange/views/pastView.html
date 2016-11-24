@@ -1,0 +1,30 @@
+<div  class = "container" ng-controller = "pastHistoryCtrl">
+		<div class = "row">
+			<div class = "col-sm-6">
+				<b>Select Currency : &nbsp;</b><select ng-model="currency" ng-options="k as v for (k,v)  in selectCurrencyCodes">
+				</select>
+			</div>
+			<div class = "col-sm-6">
+				<b>Select Year : &nbsp;</b><select ng-model = "year" ng-options = "k for k  in selectYears"></select>
+				
+			</div>
+			
+		</div>
+		
+		<div class = "row">
+			<div class = "col-sm-4">
+				<button ng-click = "getMonthlyRates()" type = "button" class = "btn btn-primary btn-lg">Get Rates <img ng-if = "showLoadingIcon" src = "./images/loading2.gif" width ="30px"></button>
+			</div>
+		</div>
+		
+		<div class = "row" ng-if = "false">
+			<div class = "col-sm-12 text-center">
+				<img src = "../images/loading2.gif" width ="80px">
+			</div>
+		</div>
+		
+		<div class = "row">
+			<div  id="chart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+			
+		</div>
+	</div>	

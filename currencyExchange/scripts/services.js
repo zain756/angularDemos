@@ -231,3 +231,101 @@ app.factory('currencyCodesFactory', function(){
 	}
 	return currencyFact;
 });
+
+
+//factory
+app.factory('histCurrencyApiFactory', ['$http', 'baseURL3', 'apikey', function($http, baseURL3, apikey){
+	var currencyFactory = {};
+	var currencyRates = {};
+	
+	currencyFactory.getHistRates = function(currency, date){
+		//console.log(currencyRates["USD" + input]);
+		var params = {
+			access_key : apikey,
+			format : 1,
+			currencies : currency,
+			date : date
+			};
+		return $http.get(baseURL3, {params: params});
+	};
+	currencyFactory.years = ['2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011'
+							 ,'2012', '2013', '2014', '2015', '2016'];
+	
+	currencyFactory.dates = ['-01-01', '-02-01', '-03-01', '-04-01', '-05-01', '-06-01', '-07-01', '-08-01', '-09-01', '-10-01', '-11-01','-12-01' ];
+	
+	currencyFactory.months = {
+			"01" : "Jan", "02" : "Feb", "03" : "Mar", "04" : "Apr", "05" : "May", "06" : "Jun", "07" : "Jul", "08" : "Aug", "09" : "Sep", "10" : "Oct",
+			"11": "Nov", "12" : "Dec"
+		
+	}
+	return currencyFactory;
+}]);
+
+app.factory('chartFactory',function(){
+	var chart = {};
+	
+	chart.draw = function(rates){
+		var arr = [];
+		var curr = rates[0].currency;
+		rates.sort(function (a, b) {
+		  if (a.month > b.month) {
+			 return 1;
+		  }
+		  if (a.month < b.month) {
+			 return -1;
+		  }
+		  // a must be equal to b
+		  return 0;
+		});
+		console.log(rates);
+		
+		for (var i = 0; i < 12; ++i){
+			arr.push(rates[i].rate);
+		}
+		console.log(arr);	
+		
+		
+		Highcharts.chart('chart', {
+        title: {
+            text: 'Monthly Currency Rate of ' + curr,
+            x: -20 //center
+        },
+        subtitle: {
+            text: 'Source: currencyLayer.com',
+            x: -20
+        },
+        xAxis: {
+            categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        },
+        yAxis: {
+            title: {
+                text: 'Currency Rate '
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valueSuffix: ' ' + curr
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: [{
+            name: curr,
+            data: arr
+        
+        }]
+    });	
+	}
+	
+		return chart;
+	
+});
+

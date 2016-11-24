@@ -62,3 +62,45 @@ app.controller("ratesViewCtrl",['$scope', 'currencyApiFactory', 'timeConvertFact
 		
 		console.log($scope.countries);
 }]);
+
+app.controller('pastHistoryCtrl',['$scope', 'histCurrencyApiFactory' ,  'currencyCodesFactory','chartFactory', 
+			function($scope, histCurrencyApiFactory, currencyCodesFactory, chartFactory) {
+  
+$scope.selectYears = histCurrencyApiFactory.years;
+$scope.year = '2015';
+$scope.selectCurrencyCodes =  currencyCodesFactory.getCurrencies();
+$scope.currency = "PKR";
+$scope.showLoadingIcon = false;
+$scope.showGraph = false;
+var dates = histCurrencyApiFactory.dates;
+var rates = [];
+$scope.getMonthlyRates = function(){
+	rates =[];
+	$scope.showLoadingIcon = true;
+	$scope.showGraph = false;
+	console.log($scope.year);
+	for(var i = 0; i < 13; ++i){
+		histCurrencyApiFactory.getHistRates($scope.currency, $scope.year + dates[i] ).then(function(response){
+				console.log(response);
+				if (response.data.success == true){
+					//console.log(response.data);
+					rates.push({
+							currency : $scope.currency,
+							month : response.data.date.substring(5, 7),
+							rate : response.data.quotes["USD" + $scope.currency] 
+						});
+					
+					//console.log(rates);
+					if (rates.length ==  12){
+						console.log(rates);
+						chartFactory.draw(rates);
+						$scope.showLoadingIcon = false;
+						$scope.showGraph = true;
+					}	
+				}
+		});
+	}
+
+}
+	
+}]);

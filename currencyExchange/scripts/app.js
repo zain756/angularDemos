@@ -2,6 +2,7 @@ var app = angular.module('myApp', ['ui.router']);
 app.constant('apikey','7111b06a719a7143768c344884da9962');
 app.constant ('baseURL1', 'http://www.apilayer.net/api/live');
 app.constant ('baseURL2', 'http://www.apilayer.net/api/list');
+app.constant ('baseURL3', 'http://www.apilayer.net/api/historical');
 
 app.config(function($stateProvider, $urlRouterProvider) {
         $stateProvider
@@ -43,6 +44,19 @@ app.config(function($stateProvider, $urlRouterProvider) {
                     'content@': {
                         templateUrl : 'views/conversionView.html',
                         controller  : 'conversionViewCtrl' 
+								 
+								
+                    }
+                }
+            })
+				
+				// route for the live rates page
+            .state('app.pastRates', {
+                url:'past',
+                views: {
+                    'content@': {
+                        templateUrl : 'views/pastView.html',
+                        controller  : 'pastHistoryCtrl' 
 								 
 								
                     }

@@ -52,7 +52,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				
 				// route for the live rates page
             .state('app.pastRates', {
-                url:'past',
+                url:'past/:currency/:year',
                 views: {
                     'content@': {
                         templateUrl : 'views/pastView.html',

@@ -1,15 +1,30 @@
 <div  class = "container" ng-controller = "pastHistoryCtrl">
+	<div class = "row">
+		<ol class="breadcrumb">
+			<li><a ui-sref="app">Home</a></li>
+			<li><a ui-sref = "app.liveRates">Rates View</a></li>
+			<li class="active">Past Rates</li>
+	   </ol>
+		<div class = "col-sm-12">
+		<h3>Past Currency Rates</h3>
+		<hr>
+	</div>
+		
+	</div>
 		<div class = "row">
 			<div class = "col-sm-6">
-				<b>Select Currency : &nbsp;</b><select ng-model="currency" ng-options="k as v for (k,v)  in selectCurrencyCodes">
+				<b>Select Currency : &nbsp;</b><select ng-model="currency"  ng-options="k as v for (k,v)  in selectCurrencyCodes">
 				</select>
 			</div>
 			<div class = "col-sm-6">
-				<b>Select Year : &nbsp;</b><select ng-model = "year" ng-options = "k for k  in selectYears"></select>
+				<b>Select Year : &nbsp;</b>
 				
+				<select ng-model = "year"  ng-options = "k for k  in selectYears"></select>
+			
 			</div>
 			
 		</div>
+		<br>
 		
 		<div class = "row">
 			<div class = "col-sm-4">
@@ -19,7 +34,7 @@
 		
 		<div class = "row" ng-if = "false">
 			<div class = "col-sm-12 text-center">
-				<img src = "../images/loading2.gif" width ="80px">
+				<img ng-src = "./images/loading2.gif" width ="80px">
 			</div>
 		</div>
 		

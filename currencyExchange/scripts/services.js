@@ -1,4 +1,4 @@
-//factory
+
 app.factory('currencyApiFactory', ['$http', 'baseURL1','baseURL2', 'apikey', function($http, baseURL1, baseURL2, apikey){
 	var currencyFactory = {};
 	var currencyRates = {};
@@ -10,10 +10,7 @@ app.factory('currencyApiFactory', ['$http', 'baseURL1','baseURL2', 'apikey', fun
 			$http.get(baseURL1,{params: params}).then(
 				function(response){
 					console.log(response.data);
-					currencyRates = response.data.quotes;
-				
-
-					
+					currencyRates = response.data.quotes;	
 			});
 	};
 	refresh();
@@ -229,11 +226,12 @@ app.factory('currencyCodesFactory', function(){
 	currencyFact.getCurrencies = function(){
 		return currencyArr;
 	}
+	
+		currencyFact.defaultCodes = 
+			['USD', 'EUR', 'CAD', 'SAR', 'PKR', 'AED',  'CNY', 'JPY', 'SGD', 'BDT', 'ILS', 'IRR', 'AFN', 'TRY', 'TWD', 'MYR', 'RUB', 'UAH', 'KRW', 'IQD' ];
 	return currencyFact;
 });
 
-
-//factory
 app.factory('histCurrencyApiFactory', ['$http', 'baseURL3', 'apikey', function($http, baseURL3, apikey){
 	var currencyFactory = {};
 	var currencyRates = {};
@@ -249,7 +247,7 @@ app.factory('histCurrencyApiFactory', ['$http', 'baseURL3', 'apikey', function($
 		return $http.get(baseURL3, {params: params});
 	};
 	currencyFactory.years = ['2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011'
-							 ,'2012', '2013', '2014', '2015', '2016'];
+	,'2012', '2013', '2014', '2015'];
 	
 	currencyFactory.dates = ['-01-01', '-02-01', '-03-01', '-04-01', '-05-01', '-06-01', '-07-01', '-08-01', '-09-01', '-10-01', '-11-01','-12-01' ];
 	

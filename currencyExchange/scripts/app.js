@@ -1,4 +1,4 @@
-var app = angular.module('myApp', ['ui.router']);
+var app = angular.module('myApp', ['ui.router', 'ngAnimate']);
 app.constant('apikey','7111b06a719a7143768c344884da9962');
 app.constant ('baseURL1', 'http://www.apilayer.net/api/live');
 app.constant ('baseURL2', 'http://www.apilayer.net/api/list');

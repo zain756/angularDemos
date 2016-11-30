@@ -19,6 +19,7 @@ app.controller('conversionViewCtrl',['$scope', 'currencyApiFactory' ,  'currency
 	
 }]);
 
+//controller
 app.controller("ratesViewCtrl",['$scope', 'currencyApiFactory', 'timeConvertFactory', 'currencyCodesFactory',
 	                function($scope, currencyApiFactory, timeConvertFactory, currencyCodesFactory){
 	

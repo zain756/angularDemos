@@ -14,5 +14,6 @@ At the end of this course you will:
 
 ##Node should be installed.Bower and gulp,json-server should be installed globally.
 ##To Run project, goto json server folder and run    json-server watch db.json
+--this is not running project . node modules are deleted for size...
 
 https://www.coursera.org/learn/angular-js

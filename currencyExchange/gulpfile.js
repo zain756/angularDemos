@@ -3,10 +3,15 @@
 
 var gulp = require ('gulp'),
    
-	browserSync = require('browser-sync');
-	
+	browserSync = require('browser-sync'),
+	jshint = require('gulp-jshint');
  
 
+gulp.task('jshint', function () {
+    return gulp.src('app/scripts/**/*.js')
+        .pipe(jshint())
+        .pipe(jshint.reporter('jshint-stylish', {beep: true}));
+});
 
 gulp.task('browser-sync', [], function () {
    var files = [

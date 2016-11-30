@@ -1,4 +1,5 @@
-
+'use strict';
+var app = app || {};
 app.factory('currencyApiFactory', ['$http', 'baseURL1','baseURL2', 'apikey', function($http, baseURL1, baseURL2, apikey){
 	var currencyFactory = {};
 	var currencyRates = {};
@@ -20,7 +21,7 @@ app.factory('currencyApiFactory', ['$http', 'baseURL1','baseURL2', 'apikey', fun
 		return currencyRates["USD" + input];
 	};
 	
-	currencyFactory.getRates = function(input){
+	currencyFactory.getRates = function(){
 		//console.log(currencyRates["USD" + input]);
 		return $http.get(baseURL1, {params: params});
 	};
@@ -46,7 +47,7 @@ app.factory('timeConvertFactory', function(){
 			var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
 			return formattedTime;
 		
-		}
+		};
 		return timeFact;
 });
 
@@ -220,12 +221,12 @@ app.factory('currencyCodesFactory', function(){
     "ZMK":"Zambian Kwacha (pre-2013)",
     "ZMW":"Zambian Kwacha",
     "ZWL":"Zimbabwean Dollar"
-  }
-	currencyFact = {};
+  };
+	var currencyFact = {};
 	
 	currencyFact.getCurrencies = function(){
 		return currencyArr;
-	}
+	};
 	
 		currencyFact.defaultCodes = 
 			['USD', 'EUR', 'CAD', 'SAR', 'PKR', 'AED',  'CNY', 'JPY', 'SGD', 'BDT', 'ILS', 'IRR', 'AFN', 'TRY', 'TWD', 'MYR', 'RUB', 'UAH', 'KRW', 'IQD' ];
@@ -234,7 +235,7 @@ app.factory('currencyCodesFactory', function(){
 
 app.factory('histCurrencyApiFactory', ['$http', 'baseURL3', 'apikey', function($http, baseURL3, apikey){
 	var currencyFactory = {};
-	var currencyRates = {};
+	
 	
 	currencyFactory.getHistRates = function(currency, date){
 		//console.log(currencyRates["USD" + input]);
@@ -246,8 +247,7 @@ app.factory('histCurrencyApiFactory', ['$http', 'baseURL3', 'apikey', function($
 			};
 		return $http.get(baseURL3, {params: params});
 	};
-	currencyFactory.years = ['2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011'
-	,'2012', '2013', '2014', '2015'];
+	currencyFactory.years = ['2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011','2012', '2013', '2014', '2015'];
 	
 	currencyFactory.dates = ['-01-01', '-02-01', '-03-01', '-04-01', '-05-01', '-06-01', '-07-01', '-08-01', '-09-01', '-10-01', '-11-01','-12-01' ];
 	
@@ -255,7 +255,7 @@ app.factory('histCurrencyApiFactory', ['$http', 'baseURL3', 'apikey', function($
 			"01" : "Jan", "02" : "Feb", "03" : "Mar", "04" : "Apr", "05" : "May", "06" : "Jun", "07" : "Jul", "08" : "Aug", "09" : "Sep", "10" : "Oct",
 			"11": "Nov", "12" : "Dec"
 		
-	}
+	};
 	return currencyFactory;
 }]);
 
@@ -321,7 +321,7 @@ app.factory('chartFactory',function(){
         
         }]
     });	
-	}
+	};
 	
 		return chart;
 	

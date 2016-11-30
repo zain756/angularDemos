@@ -1,4 +1,7 @@
+
 //controller
+'use strict';
+var app = app || {};
 app.controller('conversionViewCtrl',['$scope', 'currencyApiFactory' ,  'currencyCodesFactory', function($scope, currencyApiFactory, currencyCodesFactory) {
     
    $scope.showResults = false;
@@ -12,7 +15,7 @@ app.controller('conversionViewCtrl',['$scope', 'currencyApiFactory' ,  'currency
 	
 	$scope.getRate = function (input){
 		 $scope.result = input.amount * (currencyApiFactory.getRate(input.targetCurr) / currencyApiFactory.getRate(input.sourceCurr));
-		 $scope.result = $scope.result.toFixed(2)
+		 $scope.result = $scope.result.toFixed(2);
 		 $scope.showResults = true;
 	};
 	
@@ -31,7 +34,7 @@ app.controller("ratesViewCtrl",['$scope', 'currencyApiFactory', 'timeConvertFact
 		$scope.targetCurr = "USD";
 		//console.log($scope.selectCurrencyCodes);
 	   var rates = currencyApiFactory.getRates().then(function(response){
-			if (response.data.success == true){
+			if (response.data.success === true){
 				rates = response.data.quotes;
 				$scope.lastUpdateTime = timeConvertFactory.convert(response.data.timestamp);
 				angular.forEach( currencyCodesFactory.defaultCodes, function(val){
@@ -40,7 +43,7 @@ app.controller("ratesViewCtrl",['$scope', 'currencyApiFactory', 'timeConvertFact
 							name: currencyCodesFactory.getCurrencies()[val],
 							rate: parseFloat(rates["USD" + val]).toFixed(2)
 							
-					})
+					});
 				}, $scope.countries);
 				$scope.showLoadingIcon = false;
 			}
@@ -63,7 +66,7 @@ app.controller('pastHistoryCtrl',['$scope', 'histCurrencyApiFactory' , 'currency
   
 	$scope.selectYears = histCurrencyApiFactory.years;
 	//console.log($stateParams);
-	if ($stateParams.currency == "" && $stateParams.year == ""){
+	if ($stateParams.currency === "" && $stateParams.year === ""){
 		$scope.year = '2015';
 		$scope.currency = "PKR";
 	}
@@ -83,7 +86,7 @@ app.controller('pastHistoryCtrl',['$scope', 'histCurrencyApiFactory' , 'currency
 		
 		for(var i = 0; i < 12; ++i){
 			histCurrencyApiFactory.getHistRates($scope.currency, $scope.year + dates[i] ).then(function(response){
-					if (response.data.success == true){
+					if (response.data.success === true){
 						//console.log(response.data);
 						rates.push({
 								currency : $scope.currency,
@@ -92,7 +95,7 @@ app.controller('pastHistoryCtrl',['$scope', 'histCurrencyApiFactory' , 'currency
 							});
 						
 						//console.log(rates);
-						if (rates.length ==  12){
+						if (rates.length ===  12){
 							console.log(rates);
 							chartFactory.draw(rates);
 							$scope.showLoadingIcon = false;
@@ -102,7 +105,7 @@ app.controller('pastHistoryCtrl',['$scope', 'histCurrencyApiFactory' , 'currency
 			});
 		}
 
-	}
+	};
 	$scope.getMonthlyRates();
 	
 }]);

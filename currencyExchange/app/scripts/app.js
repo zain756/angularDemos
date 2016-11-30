@@ -1,3 +1,5 @@
+'use strict';
+
 var app = angular.module('myApp', ['ui.router', 'ngAnimate']);
 app.constant('apikey','7111b06a719a7143768c344884da9962');
 app.constant ('baseURL1', 'http://www.apilayer.net/api/live');
@@ -61,7 +63,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 								
                     }
                 }
-            })
+            });
         /*
             // route for the contactus page
             .state('app.contactus', {

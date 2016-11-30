@@ -21,11 +21,16 @@ module.exports = function(config) {
     './app/services/users/users.js',
     './app/services/pokemon/pokemon.js',
     './app/components/users/users.js',
+    './app/components/profile/profile.js',
+    './app/components/missingno/missingno.js',
+    './app/filters/capitalize/capitalize.js',
     './app/app.js',
     './app/services/users/users.spec.js',
-   
+    './app/services/pokemon/pokemon.spec.js',
     './app/components/users/users.spec.js',
-	  './app/services/pokemon/pokemon.spec.js'
+    './app/components/profile/profile.spec.js',
+    './app/components/missingno/missingno.spec.js',
+    './app/filters/capitalize/capitalize.spec.js'   
     ],
 
 

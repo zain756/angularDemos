@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+	<title>Angular App</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">	
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="styles/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="styles/sticky-footer-navbar.css" rel="stylesheet">
+     <!-- Custom styles for this template -->
+    <link href="styles/myStyles.css" rel="stylesheet">
+</head>
+<body >
+	
+	<div ui-view="header"></div>
+	<div class = "view-animate-container">
+		<div ui-view="content" class="view-animate"></div>
+	</div>
+	<div ui-view="footer"></div>
+	
+	<!--asdfasdfasdfasdfsdfsdf
+	<script src="https://use.fontawesome.com/99ebb0d30d.js"></script>-->
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-resource/1.4.8/angular-resource.js"></script>  
+	<script src="//unpkg.com/angular-ui-router/release/angular-ui-router.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src = "scripts/app.js"></script>
+	<!--<script src = "scripts/controllers.js"></script>
+	<script src = "scripts/services.js"></script>
+	-->
+
+</body>
+</html>

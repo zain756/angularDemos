@@ -1,0 +1,58 @@
+<div class = "container">
+	<div class = "row">
+		<div class = "col-sm-12">
+		<h2>Search University</h2><hr>
+		</div>
+	</div>
+	<div class = "row">
+		<div class = "col-sm-6 col-sm-offset-3">
+			<form class="userForm" name = "form" novalidate>
+
+				<div class="form-group">
+					
+					<input type="text" class="form-control" id="country" 
+							  placeholder="Enter Country" ng-model = "input.country" name = "country" required>
+
+				</div>
+				
+				<div class="form-group">
+					
+					<input type="text" class="form-control" id="countryCode" 
+							   placeholder="Enter two char Country code " ng-model = "input.alpha_two_code">
+					
+				</div>
+				
+				<div class="form-group">
+					
+					<input type="text" class="form-control" id="name" placeholder="Enter Name"
+							ng-model = "input.name" name = "name" required>
+					
+				</div>
+				
+				<div class="form-group">
+
+					<input type="text" class="form-control" id="domain" placeholder="Enter Domain"
+							ng-model = "input.domain">
+				</div>
+				
+				<div class="form-group">
+					
+					<input type="text" class="form-control" id="webPage" placeholder="Enter Website"
+						ng-model = "input.web_page">
+					
+				</div>
+				
+				<div class="form-group">
+						<button type="submit" class="btn btn-primary btn-lg" ng-click = "searchUniversities(input)" ng-disabled="myForm.$invalid">
+							
+							Save
+							 <span ng-if = "showLoadingIcon"><i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>
+							 <span class="sr-only">Loading...</span></span>
+							 </button>
+							
+				</div>
+					   
+			</form>
+		</div>
+	</div>
+</div>
